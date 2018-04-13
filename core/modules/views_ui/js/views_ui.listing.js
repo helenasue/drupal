@@ -35,4 +35,14 @@
       }
     }
   };
+
+  Drupal.behaviors.addLabelsForA11y = {
+    attach: function attach(context) {
+      $('.views-listing-table tr').once().each(function () {
+        var $viewReferenceTitle = $(this).find('h3').text();
+        var $viewReferenceTextAppendage = '<span class="visually-hidden"> ' + $viewReferenceTitle + ' view</span>';
+        $($viewReferenceTextAppendage).appendTo($('.dropbutton a', this));
+      });
+    }
+  };
 })(jQuery, Drupal);
