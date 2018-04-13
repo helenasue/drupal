@@ -47,4 +47,37 @@
       }
     },
   };
+
+  // When a view is enabled/disabled, this variable will hold its machine name.
+  // It is used in the behavior to focus on the first dropbutton link of this
+  // view's row.
+
+    /**
+     * Handles focus after Ajax update.
+    *
+    * @type {Drupal~behavior}
+    *
+    * @prop {Drupal~behaviorAttach} attach
+    *   Listen to disable events on views listing page to keep focus in context.
+    */
+
+  let changedView = null;
+  Drupal.behaviors.viewsChangeFocus = {
+    attach: (context) => {
+      // Enable a view, keep the machine name around so that the next round of
+      // Drupal.behaviorAttach() focuses it.
+      $(context).find('[data-drupal-view-id] .use-ajax').once('viewsUiListFocus')
+        .on('click', (event) => {
+          // Store the machine name of the view to focus after ajax update.
+          changedView = $(event.target).closest('tr').attr('data-drupal-view-id');
+        });
+
+      // A view has been enabled/disabled, focus the first dropbutton link.
+      if (changedView) {
+        $(`[data-drupal-view-id=${changedView}]`)
+          .find('.dropbutton a').eq(0).trigger('focus');
+        changedView = null;
+      }
+    },
+  };
 }(jQuery, Drupal));

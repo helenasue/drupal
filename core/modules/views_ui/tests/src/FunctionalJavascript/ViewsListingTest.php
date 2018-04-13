@@ -94,6 +94,7 @@ class ViewsListingTest extends JavascriptTestBase {
     $enabled_view = $page->find('css', 'tr.views-ui-list-enabled');
     // Open the dropdown with additional actions.
     $enabled_view->find('css', 'li.dropbutton-toggle button')->click();
+    $enabled_view_id = $enabled_view->getAttribute('data-drupal-view-id');
     $disable_button = $enabled_view->find('css', 'li.disable.dropbutton-action a');
     // Check that the disable button is visible now.
     $this->assertTrue($disable_button->isVisible());
@@ -109,6 +110,11 @@ class ViewsListingTest extends JavascriptTestBase {
     // Test that one enabled View has been moved to the disabled list.
     $this->assertCount($enabled_views_count - 1, $enabled_rows);
     $this->assertCount($disabled_views_count + 1, $disabled_rows);
+
+    // Test that the keyboard focus is on the dropdown button of the View we
+    // just disabled.
+    $this->assertTrue($this->getSession()->evaluateScript("jQuery(document.activeElement).parent().is('li.enable.dropbutton-action')"));
+    $this->assertTrue($this->getSession()->evaluateScript("jQuery(document.activeElement).parents('tr.views-ui-list-disabled').data('drupal-view-id') == '$enabled_view_id'"));
   }
 
   /**

@@ -113,6 +113,7 @@ class ViewListBuilder extends ConfigEntityListBuilder {
       ],
       '#attributes' => [
         'class' => [$view->status() ? 'views-ui-list-enabled' : 'views-ui-list-disabled'],
+        'data-drupal-view-id' => $view->id(),
       ],
     ];
   }
