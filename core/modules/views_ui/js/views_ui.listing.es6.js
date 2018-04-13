@@ -47,4 +47,22 @@
       }
     },
   };
+
+  // For view dropdown labels, append the title of the view to the links
+
+    /**
+     * Handles a11y labels for dropdown labels
+    *
+    */
+
+  Drupal.behaviors.addLabelsForA11y = {
+    attach: (context) => {
+      // Find dropbuttons, grab the title, and append that to the links
+      $('.views-listing-table tr').once().each(function () {
+        const $viewReferenceTitle = $(this).find('h3').text();
+        const $viewReferenceTextAppendage = `<span class="visually-hidden"> ${$viewReferenceTitle} view</span>`;
+        $($viewReferenceTextAppendage).appendTo($('.dropbutton a', this));
+      });
+    },
+  };
 }(jQuery, Drupal));
