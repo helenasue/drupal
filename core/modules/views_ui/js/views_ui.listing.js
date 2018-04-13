@@ -35,4 +35,19 @@
       }
     }
   };
+
+  var changedView = '';
+
+  Drupal.behaviors.viewsChangeFocus = {
+    attach: function attach(context) {
+      $(context).find('[data-drupal-view-id] .use-ajax').once('viewsUiListFocus').on('click', function (event) {
+        changedView = $(event.target).closest('tr').attr('data-drupal-view-id');
+      });
+
+      if (changedView && changedView !== '') {
+        $('[data-drupal-view-id="' + changedView + '"]').find('.dropbutton a').eq(0).trigger('focus');
+        changedView = '';
+      }
+    }
+  };
 })(jQuery, Drupal);
