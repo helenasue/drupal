@@ -58,7 +58,7 @@
   Drupal.behaviors.addLabelsForA11y = {
     attach: (context) => {
       // Find dropbuttons, grab the title, and append that to the links
-      $('.views-listing-table tr').once().each(function() {
+      $('.views-listing-table tr').once().each(function () {
         const $viewReferenceTitle = $(this).find('h3').text();
         const $viewReferenceTextAppendage = `<span class="visually-hidden"> ${$viewReferenceTitle} view</span>`;
         $($viewReferenceTextAppendage).appendTo($('.dropbutton a', this));
