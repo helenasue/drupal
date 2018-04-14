@@ -2,7 +2,9 @@
 
 namespace Drupal\Core\Entity;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Routing\RedirectDestinationTrait;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -206,6 +208,13 @@ class EntityListBuilder extends EntityHandlerBase implements EntityListBuilderIn
       '#type' => 'operations',
       '#links' => $this->getOperations($entity),
     ];
+    foreach ($build['#links'] as &$link) {
+      $link['title'] = new FormattableMarkup("@label <span class='visually-hidden'>@entity-label @entity-bundle</span>", [
+        '@label' => $link['title'],
+        '@entity-label' => $entity->label(),
+        '@entity-bundle' => $entity->bundle(),
+      ]);
+    }
 
     return $build;
   }
